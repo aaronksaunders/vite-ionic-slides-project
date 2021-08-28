@@ -9,32 +9,31 @@
       <!-- header on page -->
       <div style="padding-left: 10px">
         <h1>Swiperjs Slides</h1>
-      </div>
-
-      <!-- slides created by loopong through slideData -->
-      <swiper :pagination="{ clickable: true }" @swiper="onSwiperInstance">
-        <template v-for="s in slideData" :key="s.id">
-          <swiper-slide>
-            <!-- put IonCard inside of the swiper-slide element -->
+        <swiper ref="swiperRef2" @swiper="onSwiperInstance">
+          <swiper-slide v-for="s in slideData" :key="s.id">
             <ion-card>
-              <ion-card-content>
-                <!-- using name from data for slide title -->
-                <div>Slide Name {{ s.name }}</div>
-                <ion-button @click="removeSlide(s.id)">DELETE SLIDE</ion-button>
-              </ion-card-content>
+              <ion-card-content>Slide Name: {{ s.name }}</ion-card-content>
+              <div style="padding-top: 10px">
+                <ion-button @click="removeSlide(s.id)">
+                  DELETE SLIDE
+                </ion-button>
+              </div>
             </ion-card>
           </swiper-slide>
-        </template>
-      </swiper>
+        </swiper>
+      </div>
       <div style="padding-left: 10px">
-        <ion-button @click="addSlide">ADD SLIDE</ion-button>
+        <ion-button @click="addSlide(null)">ADD SLIDE</ion-button>
+      </div>
+      <div style="padding-left: 10px; padding-top: 10px">
+        SLIDE COUNT {{ swiperRef?.slides?.length }}
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import {
   IonContent,
   IonButton,
@@ -51,6 +50,9 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 
 // Import Swiper styles
 import "swiper/swiper.scss";
+import "swiper/components/navigation/navigation.scss";
+import "swiper/components/pagination/pagination.scss";
+import "swiper/components/scrollbar/scrollbar.scss";
 
 export default defineComponent({
   name: "Slides",
@@ -67,18 +69,25 @@ export default defineComponent({
     SwiperSlide,
   },
   setup() {
-    // data used to draw slides
-    const slideData = ref<any>([{ id: "1", name: "initial slide" }]);
+    const slideData = ref<any>([
+      { id: "1", name: "Initial Slides" },
+      { id: "2", name: "Initial Slide Two" },
+    ]);
 
-    // reference to swiper
     const swiperRef = ref<any>(null);
 
-    // used to get an instance of the swiper object after it is
-    // initialized
+    // used to get an instance of the swiper object after
+    //  it is initialized
     const onSwiperInstance = (v: any) => {
       console.log("onSwiperInstance", v);
       swiperRef.value = v;
     };
+
+    onMounted(() => {
+      setTimeout(() => {
+        swiperRef.value.update();
+      }, 1);
+    });
 
     // adds a slide to the list by updating the data that
     // the slides are derived from
@@ -99,8 +108,9 @@ export default defineComponent({
     return {
       slideData,
       addSlide,
-      onSwiperInstance,
       removeSlide,
+      onSwiperInstance,
+      swiperRef,
     };
   },
 });
