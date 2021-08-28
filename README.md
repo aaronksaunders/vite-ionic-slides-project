@@ -1,6 +1,10 @@
-# Getting Started with ViteJS, Ionic Framework Beta v6 And VueJS
+# Getting Started with ViteJS, Ionic Framework Beta v6 SwiperJS And VueJS
 
 This template should help get you started developing with Ionic, Vue 3 and Typescript in Vite.
+
+Ionic has depreciated IonSlides in the v6 release and recommends using the underlying library [SwiperJS](https://swiperjs.com/).
+
+In this short post I show how to integrate [SwiperJS and it VueJS](https://swiperjs.com/vue) wrapper to display a set of slides holding IonCards. How to dynamically add and removed slides from the list of slides using the SwiperJS library.
 
 ## Recommended IDE Setup
 
